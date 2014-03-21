@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+<composite:interface>
+</composite:interface>
+<composite:implementation>
+    <h:dataTable value="#{projectList.list}" var="c"
+                 styleClass="authorTable"
+                 headerClass="authorTableHeader"
+                 rowClasses="authorTableOddRow,authorTableEvenRow">
+        <h:column><f:facet name="header">ID</f:facet>
+            #{c.id}
+        </h:column>
+        <h:column><f:facet name="header">Name</f:facet>
+            #{c.name}
+        </h:column>
+        <h:column><f:facet name="header">link</f:facet>
+            <h:link value="Go detail" outcome="ProjectDetail" includeViewParams="true"  >
+                <f:param name="entityId" value="#{c.id}"/>
+            </h:link>
+        </h:column>
+        <h:column>
+            <h:commandButton value="Show (ajax)" action="#{projectList.setSelected(c.id)}">
+                <p:ajax update=":list:detail" onsuccess="onDetail(#{c.id})"/>
+            </h:commandButton>
+            <h:commandButton value="Show (reload)" action="#{projectList.setSelected(c.id)}"  >
+                <f:param name="entityId" value="#{c.id}"/>
+            </h:commandButton>
+        </h:column>
+    </h:dataTable>
+</composite:implementation>
+</html>

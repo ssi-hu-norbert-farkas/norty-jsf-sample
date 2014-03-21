@@ -1,8 +1,5 @@
 package hu.norty.projects;
 
-import hu.norty.DBData;
-import hu.norty.UserData;
-
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
@@ -23,8 +20,8 @@ public class MBDetail extends DBData implements Serializable {
     private static final long serialVersionUID = 1L;
     private HashMap<String, Object> detail;
 
-    @ManagedProperty("#{userData}")
-    private UserData bean;
+    @ManagedProperty("#{projectList}")
+    private MBAbstractList list;
     /*
         @ManagedProperty(value = "#{param.fields}")
         private String fields;
@@ -43,7 +40,7 @@ public class MBDetail extends DBData implements Serializable {
     private String fieldsArray[];
 
     public HashMap<String, Object> getDetail() {
-        Long id = bean.getSelected();
+        Long id = list.getSelected();
         if (detail == null || detailId == null || !detailId.equals(id)) {
             detail = readDetail(id);
         }
@@ -58,7 +55,7 @@ public class MBDetail extends DBData implements Serializable {
         Connection con = null;
         try {
             con = getConnection();
-            String stm = "Select " + bean.getFields() + " from projects where project_id = ? ";
+            String stm = "Select " + list.getDetailsFields() + " from projects where project_id = ? ";
             System.out.println(stm);
 
             PreparedStatement pst = con.prepareStatement(stm);
@@ -97,14 +94,14 @@ public class MBDetail extends DBData implements Serializable {
             return this.fields;
         }
     */
-    public void setBean(UserData bean) {
-        if (bean != null && entityId != null) {
-            bean.setSelected(entityId);
+    public void setList(MBAbstractList list) {
+        if (list != null && entityId != null) {
+            list.setSelected(entityId);
         }
-        if (bean != null) {
-            fieldsArray = bean.getFields().split(",");
+        if (list != null) {
+            fieldsArray = list.getDetailsFields().split(",");
         }
-        this.bean = bean;
+        this.list = list;
     }
 
     public Long getEntityId() {
@@ -112,8 +109,8 @@ public class MBDetail extends DBData implements Serializable {
     }
 
     public void setEntityId(Long entityId) {
-        if (bean != null && entityId != null) {
-            bean.setSelected(entityId);
+        if (list != null && entityId != null) {
+            list.setSelected(entityId);
         }
         this.entityId = entityId;
     }

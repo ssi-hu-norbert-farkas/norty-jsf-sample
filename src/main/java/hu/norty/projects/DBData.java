@@ -1,4 +1,4 @@
-package hu.norty;
+package hu.norty.projects;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
