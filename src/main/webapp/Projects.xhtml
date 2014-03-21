@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>JSF Tutorial!</title>
+    <h:outputStylesheet library="css" name="styles.css"/>
+</h:head>
+<h:body>
+    <h2>Projects</h2>
+    <script type="text/javascript">
+        function onDetail(pid) {
+            //alert(pid);
+        }
+    </script>
+    <h:form>
+        <h:commandLink action="ProjectDetail?faces-redirect=true" value="Show detail">
+            <f:param name="projectId" value="123"/>
+            <f:param name="fields" value="#{userData.fields}"/>
+        </h:commandLink>
+    </h:form>
+    <h:form id="list">
+        <table>
+            <tr>
+                <td>
+
+                    <h:inputText value="10"></h:inputText>
+                    <h:commandButton action="refresh"
+                                     value="Refresh">
+                        <p:ajax update="detail"/> </h:commandButton>
+                    <h:dataTable value="#{userData.projects}" var="c"
+                                 styleClass="authorTable"
+                                 headerClass="authorTableHeader"
+                                 rowClasses="authorTableOddRow,authorTableEvenRow">
+                        <h:column><f:facet name="header">Project ID</f:facet>
+                            #{c.id}
+                        </h:column>
+                        <h:column><f:facet name="header">Name</f:facet>
+                            #{c.name}
+                        </h:column>
+                        <h:column><f:facet name="header">link</f:facet>
+                            <h:link outcome="ProjectDetail" includeViewParams="true" value="Show detail">
+                                <f:param name="entityId" value="#{c.id}"/>
+                                <f:param name="fields" value="#{userData.fields}"/>
+                            </h:link>
+                        </h:column>
+                        <h:column>
+                            <h:commandButton value="ajax detail" action="#{userData.setSelected(c.id)}">
+                                <p:ajax update=":list:detail" onsuccess="onDetail(#{c.id})"/>
+                            </h:commandButton>
+                        </h:column>
+                    </h:dataTable>
+                </td>
+                <td>
+                    <h:outputText id="detail" value="#{userData.selected}"></h:outputText>
+                </td>
+            </tr>
+        </table>
+    </h:form>
+
+</h:body>
+</html>
