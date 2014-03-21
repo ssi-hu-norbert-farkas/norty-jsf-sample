@@ -1,29 +1,34 @@
-package hu.norty;
+package hu.norty.projects;
 
+
+import hu.norty.DBData;
+import hu.norty.Project;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import java.io.Serializable;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@ManagedBean(name = "userData", eager = true)
+@ManagedBean(name = "projectList", eager = true)
 @SessionScoped
-public class UserData extends DBData implements Serializable {
+public class MBProjectList extends DBData implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Long selected;
 
 
-    public UserData() {
-        System.out.println("created");
+    public MBProjectList() {
+        //System.out.println("created");
     }
 
     public void setSelected(Long id) {
         selected = id;
-        System.out.println("clicked :"+selected);
+        //System.out.println("clicked :"+selected);
     }
 
     public List<Project> getProjects() {

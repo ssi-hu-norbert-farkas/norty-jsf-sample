@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:tp="http://java.sun.com/jsf/composite/tutorial">
 <h:head>
     <title>JSF Tutorial!</title>
     <h:outputStylesheet library="css" name="styles.css"/>
@@ -16,22 +17,13 @@
             //alert(pid);
         }
     </script>
-    <h:form>
-        <h:commandLink action="ProjectDetail?faces-redirect=true" value="Show detail">
-            <f:param name="projectId" value="123"/>
-            <f:param name="fields" value="#{userData.fields}"/>
-        </h:commandLink>
-    </h:form>
     <h:form id="list">
         <table>
             <tr>
                 <td>
+                    <h4>Project List</h4>
 
-                    <h:inputText value="10"></h:inputText>
-                    <h:commandButton action="refresh"
-                                     value="Refresh">
-                        <p:ajax update="detail"/> </h:commandButton>
-                    <h:dataTable value="#{userData.projects}" var="c"
+                    <h:dataTable value="#{projectList.projects}" var="c"
                                  styleClass="authorTable"
                                  headerClass="authorTableHeader"
                                  rowClasses="authorTableOddRow,authorTableEvenRow">
@@ -42,20 +34,28 @@
                             #{c.name}
                         </h:column>
                         <h:column><f:facet name="header">link</f:facet>
-                            <h:link outcome="ProjectDetail" includeViewParams="true" value="Show detail">
+                            <h:link value="Go detail" outcome="ProjectDetail" includeViewParams="true"  >
                                 <f:param name="entityId" value="#{c.id}"/>
-                                <f:param name="fields" value="#{userData.fields}"/>
                             </h:link>
                         </h:column>
                         <h:column>
-                            <h:commandButton value="ajax detail" action="#{userData.setSelected(c.id)}">
+                            <h:commandButton value="Show (ajax)" action="#{projectList.setSelected(c.id)}">
                                 <p:ajax update=":list:detail" onsuccess="onDetail(#{c.id})"/>
+                            </h:commandButton>
+                            <h:commandButton value="Show (reload)" action="#{projectList.setSelected(c.id)}"  >
+                                <f:param name="entityId" value="#{c.id}"/>
                             </h:commandButton>
                         </h:column>
                     </h:dataTable>
+
+                    <h:inputText value="10"></h:inputText>
+                    <h:commandButton action="refresh"
+                                     value="Refresh">
+                        <p:ajax update="detail"/> </h:commandButton>
                 </td>
-                <td>
-                    <h:outputText id="detail" value="#{userData.selected}"></h:outputText>
+                <td valign="top">
+                    <h4>Project Detail</h4>
+                    <tp:projectDetail id="detail"/>
                 </td>
             </tr>
         </table>
