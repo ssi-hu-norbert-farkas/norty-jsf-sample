@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
- * Created by Norbert_Farkas on 3/19/14.
+ * 
  */
 @ManagedBean(name = "detailData", eager = true)
 @RequestScoped
